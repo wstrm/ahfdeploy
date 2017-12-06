@@ -8,7 +8,7 @@ Arrowhead Framework automatic cloud deployment project in the D0020E course.
  * (optional) Install GoLand IDE (https://www.jetbrains.com/go/)
 
 ### Dependency management
- * Install the dependency manager `dep` `go get -u github.com/golang/dep/cmd/dep`
+ * Install the dependency manager `dep` with `go get -u github.com/golang/dep/cmd/dep`
  * Run `dep ensure` and you're good to go!
 
 __TBC__
