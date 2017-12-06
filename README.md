@@ -4,7 +4,7 @@ Arrowhead Framework automatic cloud deployment project in the D0020E course.
 
 ## Setup development environment
 ### Prerequisites
- * Download and install
+ * Download and install Go (https://golang.org/dl/)
  * (optional) Install GoLand IDE (https://www.jetbrains.com/go/)
 
 ### Dependency management
