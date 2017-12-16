@@ -13,7 +13,9 @@ Arrowhead Framework automatic cloud deployment project in the D0020E course.
 
 ## Development guidelines
 ### Lint and format
-Pull requests should pass through `go fmt` then `go imports`. Bonus: Also run `go vet`.
+Before you commit, the affected files should be run through `goimports`. Bonus: Also run `go vet`.
+
+ * goimports: `go get golang.org/x/tools/cmd/goimports`
 
 ### Tests
 Write tests for everything.
