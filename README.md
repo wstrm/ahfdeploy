@@ -11,7 +11,41 @@ Arrowhead Framework automatic cloud deployment project in the D0020E course.
  * Install the dependency manager `dep` with `go get -u github.com/golang/dep/cmd/dep`
  * Run `dep ensure` and you're good to go!
 
-__TBC__
+## Development guidelines
+### Lint and format
+Pull requests should pass through `go fmt` then `go imports`. Bonus: Also run `go vet`.
+
+### Tests
+Write tests for everything.
+
+### Branches
+Develop inside your own branch until you're done, then pull request.
+
+### Commits
+Commits should be formatted with primary affected package as prefix, a short descriptive one liner and then an optional description the context and what the change does. Also use GitHub's `fixes #123` feature for closing issues.
+
+Example:
+```
+math: improve Sin, Cos and Tan precision for very large arguments
+
+The existing implementation has poor numerical properties for
+large arguments, so use the McGillicutty algorithm to improve
+accuracy above 1e10.
+
+The algorithm is described at http://wikipedia.org/wiki/McGillicutty_Algorithm
+
+Fixes #159
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch foo
+# Changes not staged for commit:
+#	modified:   editedfile.go
+#
+```
+
+### Code style
+Take a look at: https://github.com/golang/go/wiki/CodeReviewComments
 
 ## Project status
 | Build status | Test coverage |
