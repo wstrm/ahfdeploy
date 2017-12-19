@@ -21,10 +21,10 @@ Before you commit, the affected files should be run through `goimports`. Bonus: 
 Write tests for everything.
 
 ### Branches
-Develop inside your own branch until you're done, then pull request.
+Develop inside your own branch until you're done, then send a pull request.
 
 ### Commits
-Commits should be formatted with primary affected package as prefix, a short descriptive one liner and then an optional description the context and what the change does. Also use GitHub's `fixes #123` feature for closing issues.
+Commits should be formatted with primary affected package as prefix, a short descriptive one liner and then an optional description of the context and what the change does. Also use GitHub's `fixes #123` feature for closing issues.
 
 Example:
 ```
@@ -56,4 +56,4 @@ Take a look at: https://github.com/golang/go/wiki/CodeReviewComments
 
 ## Documentation
 ### Official Arrowhead Framework documentation
-Link to official AHF repo: https://forge.soa4d.org/scm/?group_id=58
+Link to the official AHF repo: https://forge.soa4d.org/scm/?group_id=58
