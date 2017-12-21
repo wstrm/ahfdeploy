@@ -1,0 +1,18 @@
+language: go
+
+go:
+- 1.9.x
+
+git:
+  submodules: false
+
+install:
+- ./tool/init.sh
+
+after_success:
+- go get github.com/mattn/goveralls
+- $HOME/gopath/bin/goveralls -coverprofile=coverage.txt -service=travis-ci -repotoken $COVERALLS_TOKEN
+
+script:
+- go build github.com/willeponken/d0020e-arrowhead/cmd/ahfdeploy
+- ./tool/test_full.bash d0020e-arrowhead github.com/willeponken/d0020e-arrowhead/cmd/ahfdeploy
