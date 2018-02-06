@@ -1,0 +1,5 @@
+/vendor
+/.idea
+/coverage.txt
+/coverage.tmp
+credentials.csv
