@@ -1,16 +1,16 @@
-package session
+package deploy
 
 import (
 	"fmt"
 
+	"github.com/willeponken/d0020e-arrowhead/deploy/aws"
 	"github.com/willeponken/d0020e-arrowhead/provider"
-	"github.com/willeponken/d0020e-arrowhead/session/aws"
 )
 
 type Client interface {
 	Region() (region string)
 	Provider() (providerID int)
-	Push(image string) (err error)
+	Upload(image string) (err error)
 	Run(serviceName, clusterName, containerName string) (result string, err error)
 }
 
