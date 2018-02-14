@@ -13,7 +13,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	result, err := client.NewService("ecs-test-service", "hello_world")
+	result, err := client.Run("ecs-test-service", "test-cluster", "hello_world")
 	if err != nil {
 		log.Fatalln(err)
 	}
