@@ -8,8 +8,8 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ecs"
-	types "github.com/moby/moby/api/types"
-	docker "github.com/moby/moby/client"
+	types "github.com/docker/docker/api/types"
+	docker "github.com/docker/docker/client"
 	"github.com/willeponken/d0020e-arrowhead/provider"
 )
 
@@ -76,7 +76,7 @@ func (a *Client) createCluster(clusterName string) (result string, err error) {
 func (a *Client) putImage(imageURI, registryAuth string) error {
 	client := a.getDockerClient()
 
-	result, err := client.ImagePush(context.Background(), imageURI, &types.ImagePushOptions{
+	result, err := client.ImagePush(context.Background(), imageURI, types.ImagePushOptions{
 		RegistryAuth: registryAuth, // RegistryAuth is the base64 encoded credentials for the registry
 	})
 	if err != nil {
@@ -96,11 +96,6 @@ func (a *Client) Region() string {
 
 func (_ *Client) Provider() int {
 	return provider.AWS
-}
-
-func (a *Client) Upload(image string) error {
-	log.Println(image)
-	return nil
 }
 
 func (a *Client) Upload(image string) error {
