@@ -10,7 +10,7 @@ import (
 type Client interface {
 	Region() (region string)
 	Provider() (providerID int)
-	Upload(image string) (err error)
+	Upload(imageURI string) (result string, err error)
 	Run(serviceName, clusterName, containerName string) (result string, err error)
 }
 
