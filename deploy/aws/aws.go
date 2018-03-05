@@ -14,7 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/ecs"
 	types "github.com/docker/docker/api/types"
 	docker "github.com/docker/docker/client"
-	"github.com/willeponken/d0020e-arrowhead/provider"
+	"github.com/willeponken/ahfdeploy/provider"
 )
 
 type Client struct {

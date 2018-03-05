@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/willeponken/d0020e-arrowhead/deploy"
-	"github.com/willeponken/d0020e-arrowhead/provider"
+	"github.com/willeponken/ahfdeploy/deploy"
+	"github.com/willeponken/ahfdeploy/provider"
 )
 
 func main() {
