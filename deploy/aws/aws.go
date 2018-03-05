@@ -180,7 +180,7 @@ func (a *Client) Upload(imageURI string) (string, error) {
 	return buf.String(), nil
 }
 
-func (a *Client) Run(serviceName, clusterName, containerName string) (result string, err error) {
+func (a *Client) Create(serviceName, clusterName, containerName string) (result string, err error) {
 	client := a.getECSClient()
 
 	// create a new cluster if the provided does not exist
@@ -202,6 +202,8 @@ func (a *Client) Run(serviceName, clusterName, containerName string) (result str
 	result, err = generalizeFuncReturn(client.CreateService(input))
 	return
 }
+
+
 
 func NewClient(region string) (client *Client, err error) {
 	sess, err := session.NewSession(&aws.Config{

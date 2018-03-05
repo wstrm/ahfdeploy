@@ -2,13 +2,39 @@ package main
 
 import (
 	"log"
-
+	"flag"
+  
 	"github.com/willeponken/ahfdeploy/deploy"
-	"github.com/willeponken/ahfdeploy/provider"
+	providers "github.com/willeponken/ahfdeploy/provider"
 )
 
 func main() {
-	client, err := deploy.NewClient(provider.AWS, "us-west-2")
+	var (
+		region string
+		provider string
+	)
+
+	flag.StringVar(&region, "region", "", "Unique region for provider")
+	flag.StringVar(&provider, "provider", "", "Service provider")
+	flag.Parse()
+
+	if region == "" {
+		log.Fatalln("Please define a region.")
+	}
+
+	if provider == "" {
+		log.Fatalln("Please define a provider.")
+	}
+
+	var p int
+	switch provider {
+	case "aws":
+		p = providers.AWS
+	default:
+		log.Fatalf("Unknown provider: %s", provider)
+	}
+
+	client, err := deploy.NewClient(p, region)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -20,7 +46,7 @@ func main() {
 
 	log.Println(resultUpload)
 
-	resultRun, err := client.Run("ecs-test-service", "test-cluster", "hello_world")
+	resultRun, err := client.Create("ecs-test-service", "test-cluster", "hello_world")
 	if err != nil {
 		log.Fatalln(err)
 	}
