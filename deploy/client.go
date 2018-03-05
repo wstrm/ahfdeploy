@@ -3,8 +3,8 @@ package deploy
 import (
 	"fmt"
 
-	"github.com/willeponken/d0020e-arrowhead/deploy/aws"
-	"github.com/willeponken/d0020e-arrowhead/provider"
+	"github.com/willeponken/ahfdeploy/deploy/aws"
+	"github.com/willeponken/ahfdeploy/provider"
 )
 
 type Client interface {

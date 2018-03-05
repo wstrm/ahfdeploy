@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 	"flag"
-
-	"github.com/willeponken/d0020e-arrowhead/deploy"
-	providers "github.com/willeponken/d0020e-arrowhead/provider"
+  
+	"github.com/willeponken/ahfdeploy/deploy"
+	providers "github.com/willeponken/ahfdeploy/provider"
 )
 
 func main() {
