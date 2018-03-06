@@ -1,5 +1,2 @@
-[submodule "doc/d0022e-arrowhead-project-proposal"]
-	path = doc/project-proposal
-	url = git@github.com:willeponken/d0022e-arrowhead-project-proposal.git
 [submodule "doc/project-proposal"]
 	branch = master
