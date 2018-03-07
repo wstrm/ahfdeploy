@@ -15,6 +15,9 @@ type awsConfig struct {
 	Service    string
 	Task       string
 	Region     string
+	Token      string
+	Secret     string
+	ID         string `toml:"id"`
 }
 
 type baseConfig struct {
@@ -32,6 +35,9 @@ func main() {
 
 	flag.StringVar(&configFilepath, "config", "ahfdeploy.toml", "Configuration filepath")
 	flag.StringVar(&config.Provider, "provider", "", "Service provider")
+	flag.StringVar(&config.AWS.Token, "aws-token", "", "Token for AWS")
+	flag.StringVar(&config.AWS.Secret, "aws-secret", "", "Secret for AWS")
+	flag.StringVar(&config.AWS.ID, "aws-id", "", "ID for AWS")
 	flag.StringVar(&config.AWS.Region, "aws-region", "", "Region for AWS")
 	flag.StringVar(&config.AWS.Repository, "aws-repository", "", "Repository for container upload to AWS ECR")
 	flag.StringVar(&config.AWS.Cluster, "aws-cluster", "ahfdeploy-default-cluster", "Cluster name for AWS ECS")
@@ -53,7 +59,19 @@ func main() {
 			log.Fatalln("Please define a AWS repository.")
 		}
 
-		client, err := deploy.NewClient(providers.AWS, config.AWS.Region)
+		var (
+			client deploy.Client
+			err    error
+		)
+		if config.AWS.Token == "" || config.AWS.Secret == "" || config.AWS.ID == "" {
+			client, err = deploy.NewClient(providers.AWS, config.AWS.Region)
+		} else {
+			client, err = deploy.NewClientWithCredentials(providers.AWS,
+				config.AWS.Region,
+				config.AWS.ID,
+				config.AWS.Secret,
+				config.AWS.Token)
+		}
 		if err != nil {
 			log.Fatalln(err)
 		}

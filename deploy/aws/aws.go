@@ -9,6 +9,7 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ecr"
 	"github.com/aws/aws-sdk-go/service/ecs"
@@ -203,12 +204,8 @@ func (a *Client) Create(serviceName, clusterName, containerName string) (result 
 	return
 }
 
-
-
-func NewClient(region string) (client *Client, err error) {
-	sess, err := session.NewSession(&aws.Config{
-		Region: aws.String(region),
-	})
+func newClientWithConfig(config *aws.Config) (client *Client, err error) {
+	sess, err := session.NewSession(config)
 
 	if err != nil {
 		return
@@ -225,11 +222,22 @@ func NewClient(region string) (client *Client, err error) {
 	}
 
 	client = &Client{
-		region:       region,
+		region:       *sess.Config.Region,
 		ecsClient:    ecs.New(sess),
 		ecrClient:    ecr.New(sess),
 		dockerClient: dockerClient,
 	}
 
 	return
+}
+
+func NewClient(region string) (client *Client, err error) {
+	return newClientWithConfig(aws.NewConfig().
+		WithRegion(region))
+}
+
+func NewClientWithCredentials(region, id, secret, token string) (client *Client, err error) {
+	return newClientWithConfig(aws.NewConfig().
+		WithCredentials(credentials.NewStaticCredentials(id, secret, token)).
+		WithRegion(region))
 }

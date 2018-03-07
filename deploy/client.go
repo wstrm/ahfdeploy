@@ -24,3 +24,14 @@ func NewClient(providerID int, region string) (client Client, err error) {
 
 	return
 }
+
+func NewClientWithCredentials(providerID int, region, id, secret, token string) (client Client, err error) {
+	switch providerID {
+	case provider.AWS:
+		client, err = aws.NewClientWithCredentials(region, id, secret, token)
+	default:
+		err = fmt.Errorf("unknown provider ID: %d", providerID)
+	}
+
+	return
+}
