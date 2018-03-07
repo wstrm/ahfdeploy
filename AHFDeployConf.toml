@@ -1,0 +1,16 @@
+title = "AHF Deploy config"
+
+[base]
+provider = "aws"
+dateChanged = "17-02-2018"
+
+
+[awsConf]
+userID = 77
+token = "1"
+region = "EU"
+
+[googleConf]
+userID = 3
+token = "0x343rfFfD"
+region = "NA"
