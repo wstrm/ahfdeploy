@@ -1,4 +1,5 @@
 /.idea
 /coverage.txt
 /coverage.tmp
+ahfdeploy.toml
 credentials.csv
