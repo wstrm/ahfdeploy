@@ -1,0 +1,8 @@
+provider = "aws"
+
+[aws]
+region = "us-west-2"
+task = "test-task"
+service = "test-service"
+cluster = "test-cluster"
+repository = "aaabbbcccddd.ecs.aws.com/just-a-example-repo"

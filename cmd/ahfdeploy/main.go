@@ -1,55 +1,95 @@
 package main
 
 import (
-	"log"
 	"flag"
-  
+	"log"
+
+	"github.com/BurntSushi/toml"
 	"github.com/willeponken/ahfdeploy/deploy"
 	providers "github.com/willeponken/ahfdeploy/provider"
 )
 
-func main() {
-	var (
-		region string
-		provider string
-	)
+type awsConfig struct {
+	Repository string
+	Cluster    string
+	Service    string
+	Task       string
+	Region     string
+	Token      string
+	Secret     string
+	ID         string `toml:"id"`
+}
 
-	flag.StringVar(&region, "region", "", "Unique region for provider")
-	flag.StringVar(&provider, "provider", "", "Service provider")
+type baseConfig struct {
+	Provider string
+	AWS      awsConfig `toml:"aws"`
+}
+
+type baseFlags struct {
+	baseConfig
+}
+
+func main() {
+	var config baseConfig
+	var configFilepath string
+
+	flag.StringVar(&configFilepath, "config", "ahfdeploy.toml", "Configuration filepath")
+	flag.StringVar(&config.Provider, "provider", "", "Service provider")
+	flag.StringVar(&config.AWS.Token, "aws-token", "", "Token for AWS")
+	flag.StringVar(&config.AWS.Secret, "aws-secret", "", "Secret for AWS")
+	flag.StringVar(&config.AWS.ID, "aws-id", "", "ID for AWS")
+	flag.StringVar(&config.AWS.Region, "aws-region", "", "Region for AWS")
+	flag.StringVar(&config.AWS.Repository, "aws-repository", "", "Repository for container upload to AWS ECR")
+	flag.StringVar(&config.AWS.Cluster, "aws-cluster", "ahfdeploy-default-cluster", "Cluster name for AWS ECS")
+	flag.StringVar(&config.AWS.Service, "aws-service", "ahfdeploy-default-service", "Service name for AWS ECS")
+	flag.StringVar(&config.AWS.Task, "aws-task", "ahfdeploy-default-task", "Task Definition name for AWS ECS")
 	flag.Parse()
 
-	if region == "" {
-		log.Fatalln("Please define a region.")
+	if _, err := toml.DecodeFile(configFilepath, &config); err != nil {
+		log.Fatalln(err)
 	}
 
-	if provider == "" {
+	if config.Provider == "" {
 		log.Fatalln("Please define a provider.")
 	}
 
-	var p int
-	switch provider {
+	switch config.Provider {
 	case "aws":
-		p = providers.AWS
+		if config.AWS.Repository == "" {
+			log.Fatalln("Please define a AWS repository.")
+		}
+
+		var (
+			client deploy.Client
+			err    error
+		)
+		if config.AWS.Token == "" || config.AWS.Secret == "" || config.AWS.ID == "" {
+			client, err = deploy.NewClient(providers.AWS, config.AWS.Region)
+		} else {
+			client, err = deploy.NewClientWithCredentials(providers.AWS,
+				config.AWS.Region,
+				config.AWS.ID,
+				config.AWS.Secret,
+				config.AWS.Token)
+		}
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		resultUpload, err := client.Upload(config.AWS.Repository)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		log.Println(resultUpload)
+
+		resultRun, err := client.Create(config.AWS.Service, config.AWS.Cluster, config.AWS.Task)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		log.Println(resultRun)
 	default:
-		log.Fatalf("Unknown provider: %s", provider)
+		log.Fatalf("Unknown provider: %s", config.Provider)
 	}
-
-	client, err := deploy.NewClient(p, region)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	resultUpload, err := client.Upload("059336174526.dkr.ecr.us-west-2.amazonaws.com/willeponken:latest")
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	log.Println(resultUpload)
-
-	resultRun, err := client.Create("ecs-test-service", "test-cluster", "hello_world")
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	log.Println(resultRun)
 }
