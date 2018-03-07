@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"log"
+	"os"
 
 	"github.com/BurntSushi/toml"
 	"github.com/willeponken/ahfdeploy/deploy"
@@ -29,6 +30,12 @@ type baseFlags struct {
 	baseConfig
 }
 
+func exitWithHelp(code int, message string) {
+	log.Println(message)
+	flag.Usage()
+	os.Exit(code)
+}
+
 func main() {
 	var config baseConfig
 	var configFilepath string
@@ -45,18 +52,17 @@ func main() {
 	flag.StringVar(&config.AWS.Task, "aws-task", "ahfdeploy-default-task", "Task Definition name for AWS ECS")
 	flag.Parse()
 
-	if _, err := toml.DecodeFile(configFilepath, &config); err != nil {
-		log.Fatalln(err)
-	}
+	// Load configuration file, if it doesn't exist or is invalid, we'll only use flags.
+	toml.DecodeFile(configFilepath, &config)
 
 	if config.Provider == "" {
-		log.Fatalln("Please define a provider.")
+		exitWithHelp(1, "Please define a provider.")
 	}
 
 	switch config.Provider {
 	case "aws":
 		if config.AWS.Repository == "" {
-			log.Fatalln("Please define a AWS repository.")
+			exitWithHelp(1, "Please define a AWS repository.")
 		}
 
 		var (
