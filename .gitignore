@@ -3,3 +3,5 @@
 /coverage.tmp
 ahfdeploy.toml
 credentials.csv
+main
+ahfdeploy

@@ -2,6 +2,15 @@ ahfdeploy
 =========
 Arrowhead Framework automatic cloud deployment project in the D0020E course.
 
+## Installation and running
+### Binary
+Get the latest binary from: https://github.com/willeponken/ahfdeploy/releases
+
+### From source
+ * Download and install Go (https://golang.org/dl/)
+ * Change directory to `cmd/ahfdeploy` and run `go build`
+ * Run the binary created as `ahfdeploy`, run with `--help` for instructions
+
 ## Setup development environment
 ### Prerequisites
  * Download and install Go (https://golang.org/dl/)
